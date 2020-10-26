@@ -13,6 +13,7 @@ class Venta {
 	method tieneAlmenosUnaCertificacionDeProductos() {
 		return certificaciones.any({ i => i.esSobreProducto() })
 	}
+	
 
 	method tieneAlmenosUnaCertificacionQueNoEsSobreProductos() {
 		return certificaciones.any({ i => not i.esSobreProducto() })

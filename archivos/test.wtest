@@ -1,0 +1,187 @@
+import vendedoress.*
+import lugares.*
+import certificaciones.*
+import centro.*
+import clientes.*
+
+
+
+test "los vendedores y comercio pueden trabajan en las ciudades dadas" {
+	
+	const buenos_aires = new Provincia(nombre = "Buenos Aires", poblacion = 2890000)
+	const cordoba = new Provincia(nombre = "Córdoba", poblacion = 1391000)
+	const santa_fe = new Provincia(nombre = "Santa Fe", poblacion = 3369000)
+	
+	const hurlingham = new Ciudad(nombre = "Húrlingham", provinciaDondeEsta = buenos_aires)
+	const moron = new Ciudad(nombre = "Morón", provinciaDondeEsta = buenos_aires)
+	const palomar = new Ciudad(nombre = "El Palomar", provinciaDondeEsta = buenos_aires)
+	const rosario = new Ciudad(nombre = "Rosario", provinciaDondeEsta = santa_fe)
+	const la_cumbrecita = new Ciudad(nombre = "La Cumbrecita", provinciaDondeEsta = cordoba)
+	const general_belgrano = new Ciudad(nombre = "Villa General Belgrano", provinciaDondeEsta = cordoba)
+	
+	const vendedor1 = new VendedorFijo(ciudadDondeVive = hurlingham)
+	const vendedor2 = new VendedorViajante(provinciasDondeEstaHabilitado = [ buenos_aires, cordoba, santa_fe ])
+	const comercio = new ComercioCorresponsal(ciudadesDondeTieneSucursales = [ hurlingham, moron, general_belgrano, rosario ])
+
+	assert.that(vendedor1.puedeTrabajar(hurlingham))
+	assert.that(vendedor2.puedeTrabajar(general_belgrano))
+	assert.that(comercio.puedeTrabajar(moron))
+}
+
+test"el vendedor1 es versatil"{
+	
+	const buenos_aires = new Provincia(nombre = "Buenos Aires", poblacion = 2890000)
+
+	const hurlingham = new Ciudad(nombre = "Húrlingham", provinciaDondeEsta = buenos_aires)
+	
+	const vendedor1 = new VendedorFijo(ciudadDondeVive = hurlingham)
+	
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = false))	
+
+	assert.that(vendedor1.esVersatil())
+}
+
+test"el vendedor1 es firme"{
+	const buenos_aires = new Provincia(nombre = "Buenos Aires", poblacion = 2890000)
+
+	const hurlingham = new Ciudad(nombre = "Húrlingham", provinciaDondeEsta = buenos_aires)
+	
+	const vendedor1 = new VendedorFijo(ciudadDondeVive = hurlingham)
+	
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = false))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = false))
+	
+	assert.that(vendedor1.esFirme())
+
+}
+
+test "el vendedor 1 no es influyente"{
+	const buenos_aires = new Provincia(nombre = "Buenos Aires", poblacion = 2890000)
+
+	const hurlingham = new Ciudad(nombre = "Húrlingham", provinciaDondeEsta = buenos_aires)
+	
+	const vendedor1 = new VendedorFijo(ciudadDondeVive = hurlingham)
+	
+	assert.notThat(vendedor1.esInfluyente())
+}
+
+test"el vendedor 2 es influyente"{
+	
+	const buenos_aires = new Provincia(nombre = "Buenos Aires", poblacion = 2890000)
+	const cordoba = new Provincia(nombre = "Córdoba", poblacion = 1391000)
+	const santa_fe = new Provincia(nombre = "Santa Fe", poblacion = 3369000)
+	const entre_rios = new Provincia(nombre = "Entre Ríos", poblacion = 1308000)
+	const corrientes = new Provincia(nombre = "Corrientes", poblacion =1006000)
+	const san_luis = new Provincia(nombre = "San Luis",poblacion = 1000000)
+	
+	
+	const vendedor2 = new VendedorViajante(provinciasDondeEstaHabilitado = [ buenos_aires, cordoba, santa_fe,entre_rios,corrientes,san_luis ])
+	
+	assert.that(vendedor2.esInfluyente())
+}
+
+test"el vendedor3 es influyentes"{
+	const buenos_aires = new Provincia(nombre = "Buenos Aires", poblacion = 2890000)
+	const cordoba = new Provincia(nombre = "Córdoba", poblacion = 1391000)
+	const santa_fe = new Provincia(nombre = "Santa Fe", poblacion = 3369000)
+	const entre_rios = new Provincia(nombre = "Entre Ríos", poblacion = 1308000)
+	const corrientes = new Provincia(nombre = "Corrientes", poblacion =1006000)
+	const san_luis = new Provincia(nombre = "San Luis",poblacion = 1000000)
+	
+	const hurlingham = new Ciudad(nombre = "Húrlingham", provinciaDondeEsta = buenos_aires)
+	const moron = new Ciudad(nombre = "Morón", provinciaDondeEsta = buenos_aires)
+	const palomar = new Ciudad(nombre = "El Palomar", provinciaDondeEsta = buenos_aires)
+	const rosario = new Ciudad(nombre = "Rosario", provinciaDondeEsta = santa_fe)
+	const la_cumbrecita = new Ciudad(nombre = "La Cumbrecita", provinciaDondeEsta = cordoba)
+	const general_belgrano = new Ciudad(nombre = "Villa General Belgrano", provinciaDondeEsta = cordoba)
+	
+	const comercio = new ComercioCorresponsal(ciudadesDondeTieneSucursales = [ hurlingham, moron, general_belgrano, rosario, la_cumbrecita ])
+
+	assert.that(comercio.esInfluyente())
+
+}
+
+test"el vendedor1 es el vendedor estrella"{
+	
+	
+	const buenos_aires = new Provincia(nombre = "Buenos Aires", poblacion = 2890000)
+	const cordoba = new Provincia(nombre = "Córdoba", poblacion = 1391000)
+	const santa_fe = new Provincia(nombre = "Santa Fe", poblacion = 3369000)
+	
+	const hurlingham = new Ciudad(nombre = "Húrlingham", provinciaDondeEsta = buenos_aires)
+	const moron = new Ciudad(nombre = "Morón", provinciaDondeEsta = buenos_aires)
+	const palomar = new Ciudad(nombre = "El Palomar", provinciaDondeEsta = buenos_aires)
+	const rosario = new Ciudad(nombre = "Rosario", provinciaDondeEsta = santa_fe)
+	const la_cumbrecita = new Ciudad(nombre = "La Cumbrecita", provinciaDondeEsta = cordoba)
+	const general_belgrano = new Ciudad(nombre = "Villa General Belgrano", provinciaDondeEsta = cordoba)
+	
+	const vendedor1 = new VendedorFijo(ciudadDondeVive = hurlingham)
+	const vendedor2 = new VendedorViajante(provinciasDondeEstaHabilitado = [ buenos_aires, cordoba, santa_fe ])
+	const comercio = new ComercioCorresponsal(ciudadesDondeTieneSucursales = [ hurlingham, moron, general_belgrano, rosario ])
+	
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))	
+	
+	vendedor2.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor2.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor2.lograrCertificacion(new Certificacion(esSobreProducto = false))	
+	
+	comercio.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	comercio.lograrCertificacion(new Certificacion(esSobreProducto = false))
+	comercio.lograrCertificacion(new Certificacion(esSobreProducto = false))	
+	
+	
+	const centro = new CentroDeDistribucion(ciudadDondeEsta = hurlingham)
+	
+	centro.agregarUnVendedor(vendedor1)
+	centro.agregarUnVendedor(vendedor2)
+	centro.agregarUnVendedor(comercio)
+
+	assert.equals(vendedor1,centro.vendedorEstrella())
+
+}
+
+test"centro puede cubrir hurlingham y moron pero no rosario "{
+		const buenos_aires = new Provincia(nombre = "Buenos Aires", poblacion = 2890000)
+	const cordoba = new Provincia(nombre = "Córdoba", poblacion = 1391000)
+	const santa_fe = new Provincia(nombre = "Santa Fe", poblacion = 3369000)
+	
+	const hurlingham = new Ciudad(nombre = "Húrlingham", provinciaDondeEsta = buenos_aires)
+	const moron = new Ciudad(nombre = "Morón", provinciaDondeEsta = buenos_aires)
+	const palomar = new Ciudad(nombre = "El Palomar", provinciaDondeEsta = buenos_aires)
+	const rosario = new Ciudad(nombre = "Rosario", provinciaDondeEsta = santa_fe)
+	const la_cumbrecita = new Ciudad(nombre = "La Cumbrecita", provinciaDondeEsta = cordoba)
+	const general_belgrano = new Ciudad(nombre = "Villa General Belgrano", provinciaDondeEsta = cordoba)
+	
+	const vendedor1 = new VendedorFijo(ciudadDondeVive = hurlingham)
+	const vendedor2 = new VendedorViajante(provinciasDondeEstaHabilitado = [ buenos_aires, cordoba ])
+	const comercio = new ComercioCorresponsal(ciudadesDondeTieneSucursales = [ hurlingham, moron, general_belgrano])
+	
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor1.lograrCertificacion(new Certificacion(esSobreProducto = true))	
+	
+	vendedor2.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor2.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	vendedor2.lograrCertificacion(new Certificacion(esSobreProducto = false))	
+	
+	comercio.lograrCertificacion(new Certificacion(esSobreProducto = true))
+	comercio.lograrCertificacion(new Certificacion(esSobreProducto = false))
+	comercio.lograrCertificacion(new Certificacion(esSobreProducto = false))	
+	
+	
+	const centro = new CentroDeDistribucion(ciudadDondeEsta = hurlingham)
+	
+	centro.agregarUnVendedor(vendedor1)
+	centro.agregarUnVendedor(vendedor2)
+	centro.agregarUnVendedor(comercio)
+
+	assert.that(centro.puedeCubrirLaCiudad_(hurlingham))
+	assert.that(centro.puedeCubrirLaCiudad_(moron))
+	assert.notThat(centro.puedeCubrirLaCiudad_(rosario))
+}
